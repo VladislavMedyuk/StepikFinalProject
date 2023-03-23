@@ -1,9 +1,26 @@
 from selenium.common.exceptions import NoSuchElementException
+
+
 class BasePage:
-    def __init__(self, browser, url, timeout=10):
-        self.browser = browser
-        self.url = url
-        self.browser.implicitly_wait(timeout)
+    def __init__(self, browser, url):
+        self.__browser = browser
+        self.__url = url
+
+    @property
+    def browser(self):
+        return self.__browser
+
+    @browser.setter
+    def browser(self, browser):
+        self.__browser = browser
+
+    @property
+    def url(self):
+        return self.__url
+
+    @url.setter
+    def url(self, url):
+        self.__url = url
 
     def open(self):
         self.browser.get(self.url)
@@ -14,4 +31,3 @@ class BasePage:
         except NoSuchElementException:
             return False
         return True
-
