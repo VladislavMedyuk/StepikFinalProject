@@ -1,6 +1,5 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver import FirefoxOptions
 
 
 def pytest_addoption(parser):
@@ -25,7 +24,7 @@ def browser(request):
         browser.implicitly_wait(5)
     elif browser_name == "firefox":
         print("\nstart firefox browser for test..")
-        options = FirefoxOptions()
+        options = webdriver.FirefoxOptions()
         options.set_preference("intl.accept_languages", language)
         browser = webdriver.Firefox(options=options)
         browser.maximize_window()
