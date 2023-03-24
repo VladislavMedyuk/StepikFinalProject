@@ -1,11 +1,10 @@
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
-
-url = "http://selenium1py.pythonanywhere.com/"
+from resourses.env import Links
 
 
 def test_guest_can_go_to_login_page(browser):
-    page = MainPage(browser, url)
+    page = MainPage(browser, Links.MAIN_LINK)
     page.open()
     page.go_to_login_page()
     login_page = LoginPage(browser, browser.current_url)
