@@ -1,5 +1,6 @@
 import pytest
 from selenium import webdriver
+from resourses.time import Timeout
 
 
 def pytest_addoption(parser):
@@ -20,15 +21,14 @@ def browser(request):
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         options.add_experimental_option('prefs', {'intl.accept_languages': language})
         browser = webdriver.Chrome(options=options)
-        browser.maximize_window()
-        browser.implicitly_wait(5)
+        browser.implicitly_wait(Timeout.timeout)
     elif browser_name == "firefox":
         print("\nstart firefox browser for test..")
         options = webdriver.FirefoxOptions()
         options.set_preference("intl.accept_languages", language)
         browser = webdriver.Firefox(options=options)
-        browser.maximize_window()
-        browser.implicitly_wait(5)
+        browser.implicitly_wait(Timeout.timeout)
+    browser.maximize_window()
     yield browser
     print("\nquit browser..")
     browser.quit()
