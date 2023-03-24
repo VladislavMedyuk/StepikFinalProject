@@ -1,4 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.wait import WebDriverWait
+from resourses.time import Timeout
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class BasePage:
@@ -27,7 +30,11 @@ class BasePage:
 
     def is_element_present(self, method, selector):
         try:
-            self.browser.find_element(method, selector)
+            WebDriverWait(self.browser, Timeout.timeout).until(
+                EC.presence_of_element_located((method, selector))
+            )
         except NoSuchElementException:
             return False
         return True
+
+    # def solve_quiz_and_get_code(self):
