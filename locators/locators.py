@@ -16,4 +16,3 @@ class LoginPageLocators:
     PASSWORD = (By.NAME, "registration-password1")
     REPEAT_PASSWORD = (By.NAME, "registration-password2")
     REGISTRATION_BUTTON = (By.NAME, "registration_submit")
-
