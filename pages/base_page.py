@@ -28,9 +28,9 @@ class BasePage:
     def open(self):
         self.browser.get(self.url)
 
-    def is_element_present(self, locator):
+    def is_element_present(self, locator: tuple) -> bool:
         try:
-            WebDriverWait(self.browser, Resources.timeout).until(
+            WebDriverWait(self.browser, Resources.TIMEOUT).until(
                 EC.visibility_of_element_located(locator)
             )
         except NoSuchElementException:
