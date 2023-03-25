@@ -27,6 +27,8 @@ def browser(request):
             options = webdriver.FirefoxOptions()
             options.set_preference("intl.accept_languages", language)
             browser = webdriver.Firefox(options=options)
+        case _:
+            raise pytest.UsageError("--browser_name should be chrome or firefox")
     browser.maximize_window()
     yield browser
     print("\nquit browser..")
