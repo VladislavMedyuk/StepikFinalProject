@@ -1,6 +1,6 @@
 import pytest
 from selenium import webdriver
-from resourses.env import Resources
+from resourses.env import Browsers
 
 
 def pytest_addoption(parser):
@@ -12,20 +12,20 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="function")
 def browser(request):
-    BROWSER_NAME = request.config.getoption("browser_name").lower()
-    LANGUAGE = request.config.getoption("language").lower()
+    browser_name = request.config.getoption("browser_name").lower()
+    language = request.config.getoption("language").lower()
     browser = None
-    match BROWSER_NAME:
-        case Resources.CHROME_BROWSER:
+    match browser_name:
+        case Browsers.CHROME_BROWSER.value:
             print("\nstart chrome browser for test..")
             options = webdriver.ChromeOptions()
             options.add_experimental_option('excludeSwitches', ['enable-logging'])
-            options.add_experimental_option('prefs', {'intl.accept_languages': LANGUAGE})
+            options.add_experimental_option('prefs', {'intl.accept_languages': language})
             browser = webdriver.Chrome(options=options)
-        case Resources.FIREFOX_BROWSER:
+        case Browsers.FIREFOX_BROWSER.value:
             print("\nstart firefox browser for test..")
             options = webdriver.FirefoxOptions()
-            options.set_preference("intl.accept_languages", LANGUAGE)
+            options.set_preference("intl.accept_languages", language)
             browser = webdriver.Firefox(options=options)
     browser.maximize_window()
     yield browser
