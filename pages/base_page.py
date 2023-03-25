@@ -15,7 +15,7 @@ class BasePage:
         return self.__browser
 
     @browser.setter
-    def browser(self, browser):
+    def browser(self, browser: webdriver):
         self.__browser = browser
 
     @property
@@ -23,7 +23,7 @@ class BasePage:
         return self.__url
 
     @url.setter
-    def url(self, url):
+    def url(self, url: url):
         self.__url = url
 
     def open(self):
