@@ -9,5 +9,5 @@ class MainPage(BasePage):
         # alert = self.browser.switch_to.alert
         # alert.accept()
 
-    # def should_be_login_link(self):
-    #   assert self.is_element_present(*MainPageLocators.LOGIN_LINK), "Login link is not present"
+    def should_be_login_link(self):
+        assert self.is_element_present(MainPageLocators.LOGIN_LINK), "Login link is not present"
