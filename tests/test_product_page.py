@@ -1,9 +1,11 @@
 from resourses.env import Resources
 from pages.product_page import ProductPage
+import pytest
 
 
-def test_guest_can_add_item_to_basket(browser):
-    page = ProductPage(browser, Resources.PRODUCT_PAGE_LINK)
+@pytest.mark.parametrize('link', Resources.LINKS)
+def test_guest_can_add_item_to_basket(browser, link):
+    page = ProductPage(browser, link)
     page.open()
     book_name = page.find_book_name()
     book_price = page.find_book_price()
