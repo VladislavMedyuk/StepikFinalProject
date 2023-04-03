@@ -5,14 +5,15 @@ from locators.locators import ProductPageLocators
 
 
 class ProductPage(BasePage):
+    @property
     def find_book_name(self) -> str:
-        return self.browser.find_element(*ProductPageLocators.BOOK_TO_COMPARE).text
+        return self.search_element(ProductPageLocators.BOOK_TO_COMPARE).text
 
     def find_book_price(self) -> str:
-        return self.browser.find_element(*ProductPageLocators.PRICE_TO_COMPARE).text
+        return self.search_element(ProductPageLocators.PRICE_TO_COMPARE).text
 
     def add_item_to_basket(self):
-        addButton = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON)
+        addButton = self.search_element(ProductPageLocators.ADD_TO_BASKET_BUTTON)
         addButton.click()
 
     def should_be_success_message(self):
@@ -23,12 +24,12 @@ class ProductPage(BasePage):
         self.should_be_right_price(priceToCompare)
 
     def should_be_right_name(self, bookToCompare: str):
-        assert self.browser.find_element(
-            *ProductPageLocators.BOOK_NAME).text == bookToCompare, "There isn't book in basket!"
+        assert self.search_element(
+            ProductPageLocators.BOOK_NAME).text == bookToCompare, "There isn't book in basket!"
 
     def should_be_right_price(self, priceToCompare: str):
-        assert self.browser.find_element(
-            *ProductPageLocators.BOOK_PRICE).text == priceToCompare, "Wrong price for the book!"
+        assert self.search_element(
+            ProductPageLocators.BOOK_PRICE).text == priceToCompare, "Wrong price for the book!"
 
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
