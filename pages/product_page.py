@@ -5,7 +5,6 @@ from locators.locators import ProductPageLocators
 
 
 class ProductPage(BasePage):
-    @property
     def find_book_name(self) -> str:
         return self.search_element(ProductPageLocators.BOOK_TO_COMPARE).text
 
