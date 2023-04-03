@@ -3,6 +3,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from resourses.env import Resources
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.remote.webelement import WebElement
 
 
 class BasePage:
@@ -28,6 +29,14 @@ class BasePage:
 
     def open(self):
         self.browser.get(self.url)
+
+    def search_element(self, locator: tuple) -> WebElement:
+        try:
+            WebDriverWait(self.browser, Resources.TIMEOUT).until(
+                EC.visibility_of_element_located(locator)
+            )
+        finally:
+            return self.browser.find_element(*locator)
 
     def is_element_present(self, locator: tuple) -> bool:
         try:
