@@ -28,6 +28,13 @@ class BasePage:
     def url(self, url: str):
         self.__url = url
 
+    def go_to_login_page(self):
+        login_link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        login_link.click()
+
+    def should_be_login_link(self):
+        assert self.is_element_present(BasePageLocators.LOGIN_LINK), "Login link is not present"
+
     def element_is_disappeared(self, locator: tuple):
         try:
             WebDriverWait(self.browser, Resources.TIMEOUT, 1, TimeoutException). \
