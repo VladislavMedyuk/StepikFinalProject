@@ -1,9 +1,10 @@
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from resourses.env import Resources
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
+from locators.locators import BasePageLocators
 
 
 class BasePage:
@@ -27,6 +28,32 @@ class BasePage:
     def url(self, url: str):
         self.__url = url
 
+    def element_is_disappeared(self, locator: tuple):
+        try:
+            WebDriverWait(self.browser, Resources.TIMEOUT, 1, TimeoutException). \
+                until_not(EC.presence_of_element_located(locator))
+        except TimeoutException:
+            return False
+        return True
+
+    def is_element_present(self, locator: tuple) -> bool:
+        try:
+            WebDriverWait(self.browser, Resources.TIMEOUT).until(
+                EC.visibility_of_element_located(locator)
+            )
+        except NoSuchElementException:
+            return False
+        return True
+
+    def is_not_element_present(self, locator: tuple) -> bool:
+        try:
+            WebDriverWait(self.browser, Resources.TIMEOUT).until(
+                EC.visibility_of_element_located(locator)
+            )
+        except TimeoutException:
+            return True
+        return False
+
     def open(self):
         self.browser.get(self.url)
 
@@ -37,12 +64,3 @@ class BasePage:
             )
         finally:
             return self.browser.find_element(*locator)
-
-    def is_element_present(self, locator: tuple) -> bool:
-        try:
-            WebDriverWait(self.browser, Resources.TIMEOUT).until(
-                EC.visibility_of_element_located(locator)
-            )
-        except NoSuchElementException:
-            return False
-        return True
