@@ -28,14 +28,29 @@ class BasePage:
     def url(self, url: str):
         self.__url = url
 
+    def open(self):
+        self.browser.get(self.url)
+
+    def search_element(self, locator: tuple) -> WebElement:
+        try:
+            WebDriverWait(self.browser, Resources.TIMEOUT).until(
+                EC.visibility_of_element_located(locator)
+            )
+        finally:
+            return self.browser.find_element(*locator)
+
     def go_to_login_page(self):
-        login_link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        login_link = self.search_element(BasePageLocators.LOGIN_LINK)
         login_link.click()
+
+    def go_to_basket_page(self):
+        basket_button = self.search_element(BasePageLocators.BASKET_BUTTON)
+        basket_button.click()
 
     def should_be_login_link(self):
         assert self.is_element_present(BasePageLocators.LOGIN_LINK), "Login link is not present"
 
-    def element_is_disappeared(self, locator: tuple):
+    def element_is_disappeared(self, locator: tuple) -> bool:
         try:
             WebDriverWait(self.browser, Resources.TIMEOUT, 1, TimeoutException). \
                 until_not(EC.presence_of_element_located(locator))
@@ -60,14 +75,3 @@ class BasePage:
         except TimeoutException:
             return True
         return False
-
-    def open(self):
-        self.browser.get(self.url)
-
-    def search_element(self, locator: tuple) -> WebElement:
-        try:
-            WebDriverWait(self.browser, Resources.TIMEOUT).until(
-                EC.visibility_of_element_located(locator)
-            )
-        finally:
-            return self.browser.find_element(*locator)
