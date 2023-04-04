@@ -1,3 +1,4 @@
+from pages.basket_page import BasketPage
 from pages.login_page import LoginPage
 from resourses.env import Resources
 from pages.product_page import ProductPage
@@ -49,3 +50,11 @@ def test_message_disappeared_after_adding_product_to_basket(browser):
     page.open()
     page.add_item_to_basket()
     page.should_be_disappeared()
+
+
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    page = ProductPage(browser, Resources.PRODUCT_PAGE_LINK)
+    page.open()
+    page.go_to_basket_page()
+    basket_page = BasketPage(browser, browser.current_url)
+    basket_page.basket_should_be_empty()
