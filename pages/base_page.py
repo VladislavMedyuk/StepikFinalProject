@@ -8,7 +8,7 @@ from locators.locators import BasePageLocators
 
 
 class BasePage:
-    def __init__(self, browser: webdriver, url: str):
+    def __init__(self, browser: webdriver, url: str) -> None:
         self.__browser = browser
         self.__url = url
 
@@ -17,7 +17,7 @@ class BasePage:
         return self.__browser
 
     @browser.setter
-    def browser(self, browser: webdriver):
+    def browser(self, browser: webdriver) -> None:
         self.__browser = browser
 
     @property
@@ -25,53 +25,48 @@ class BasePage:
         return self.__url
 
     @url.setter
-    def url(self, url: str):
+    def url(self, url: str) -> None:
         self.__url = url
 
-    def open(self):
+    def open(self) -> None:
         self.browser.get(self.url)
 
     def search_element(self, locator: tuple) -> WebElement:
-        try:
-            WebDriverWait(self.browser, Resources.TIMEOUT).until(
-                EC.visibility_of_element_located(locator)
-            )
-        finally:
-            return self.browser.find_element(*locator)
+        return WebDriverWait(self.browser, Resources.TIMEOUT).until(EC.visibility_of_element_located(locator))
 
-    def go_to_login_page(self):
+    def should_be_login_link(self) -> None:
+        assert self.is_element_present(BasePageLocators.LOGIN_LINK), "Login link is not present"
+
+    def go_to_login_page(self) -> None:
         login_link = self.search_element(BasePageLocators.LOGIN_LINK)
         login_link.click()
 
-    def go_to_basket_page(self):
+    def go_to_basket_page(self) -> None:
         basket_button = self.search_element(BasePageLocators.BASKET_BUTTON)
         basket_button.click()
 
-    def should_be_login_link(self):
-        assert self.is_element_present(BasePageLocators.LOGIN_LINK), "Login link is not present"
+    # def is_element_present(self, locator: tuple) -> bool:
+    #     try:
+    #         WebDriverWait(self.browser, Resources.TIMEOUT).until(
+    #             EC.visibility_of_element_located(locator)
+    #         )
+    #     except NoSuchElementException:
+    #         return False
+    #     return True
 
-    def element_is_disappeared(self, locator: tuple) -> bool:
+    def is_not_element_present(self, locator: tuple) -> bool:
         try:
-            WebDriverWait(self.browser, Resources.TIMEOUT, 1, TimeoutException). \
-                until_not(EC.presence_of_element_located(locator))
+            WebDriverWait(self.browser, Resources.TIMEOUT).until(
+                EC.invisibility_of_element_located(locator)
+            )
         except TimeoutException:
             return False
         return True
 
     def is_element_present(self, locator: tuple) -> bool:
         try:
-            WebDriverWait(self.browser, Resources.TIMEOUT).until(
+            return WebDriverWait(self.browser, Resources.TIMEOUT).until(
                 EC.visibility_of_element_located(locator)
-            )
+            ).is_displayed()
         except NoSuchElementException:
             return False
-        return True
-
-    def is_not_element_present(self, locator: tuple) -> bool:
-        try:
-            WebDriverWait(self.browser, Resources.TIMEOUT).until(
-                EC.visibility_of_element_located(locator)
-            )
-        except TimeoutException:
-            return True
-        return False
