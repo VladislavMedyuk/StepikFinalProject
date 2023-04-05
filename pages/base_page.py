@@ -45,15 +45,6 @@ class BasePage:
         basket_button = self.search_element(BasePageLocators.BASKET_BUTTON)
         basket_button.click()
 
-    # def is_element_present(self, locator: tuple) -> bool:
-    #     try:
-    #         WebDriverWait(self.browser, Resources.TIMEOUT).until(
-    #             EC.visibility_of_element_located(locator)
-    #         )
-    #     except NoSuchElementException:
-    #         return False
-    #     return True
-
     def is_not_element_present(self, locator: tuple) -> bool:
         try:
             WebDriverWait(self.browser, Resources.TIMEOUT).until(
