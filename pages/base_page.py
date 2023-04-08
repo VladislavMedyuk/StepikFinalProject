@@ -61,3 +61,7 @@ class BasePage:
             ).is_displayed()
         except NoSuchElementException:
             return False
+
+    def should_be_authorized_user(self):
+        assert self.is_element_present(BasePageLocators.ICON_USER), "User icon is not presented," \
+                                                                    " probably unauthorised user"
